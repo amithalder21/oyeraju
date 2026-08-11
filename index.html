@@ -104,45 +104,46 @@
 
   /* ===== bottom floating player ===== */
   .player{
-    position:fixed; left:50%; bottom:30px; transform:translateX(-50%);
+    position:fixed; left:50%; bottom:32px; transform:translateX(-50%);
     z-index:6;
-    display:flex; align-items:center; gap:16px;
-    width:min(640px, 92vw);
-    background:linear-gradient(180deg, rgba(62,36,21,.72), rgba(30,17,10,.8));
-    backdrop-filter:blur(18px) saturate(140%);
-    -webkit-backdrop-filter:blur(18px) saturate(140%);
-    border:1px solid rgba(247,236,218,.12);
+    display:flex; align-items:center; gap:18px;
+    width:min(680px, 94vw);
+    background:linear-gradient(180deg, rgba(66,38,22,.78), rgba(26,15,9,.88));
+    backdrop-filter:blur(20px) saturate(150%);
+    -webkit-backdrop-filter:blur(20px) saturate(150%);
+    border:1px solid rgba(247,236,218,.16);
     border-radius:60px;
-    padding:10px 16px 10px 10px;
-    box-shadow:0 20px 50px -18px rgba(0,0,0,.65);
+    padding:12px 20px 12px 12px;
+    box-shadow:0 24px 60px -16px rgba(0,0,0,.7), 0 0 0 1px rgba(0,0,0,.2);
   }
   .thumb{
-    width:52px; height:52px; border-radius:50%;
+    width:60px; height:60px; border-radius:50%;
     background:radial-gradient(circle at 32% 30%, #E3963E, #9C5326 75%);
     flex:0 0 auto;
     display:flex; align-items:center; justify-content:center;
-    box-shadow:inset 0 0 0 2px rgba(247,236,218,.15);
+    box-shadow:0 0 0 3px rgba(247,236,218,.14), 0 6px 16px -4px rgba(0,0,0,.5);
   }
-  .thumb svg{ width:24px; height:24px; }
+  .thumb svg{ width:26px; height:26px; }
   .thumb img{ width:100%; height:100%; border-radius:50%; object-fit:cover; }
 
   .meta{ flex:1 1 auto; min-width:0; }
   .meta .title{
-    font-family:'Baloo 2', sans-serif; font-weight:700; font-size:16px;
+    font-family:'Baloo 2', sans-serif; font-weight:700; font-size:17.5px;
     color:#FBF4E6; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
   .meta .sub{
-    font-size:11.5px; color:rgba(247,236,218,.6);
+    font-size:12px; color:rgba(247,236,218,.62);
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    margin-top:1px;
+    margin-top:2px;
   }
   .progress{
-    height:3px; border-radius:2px; background:rgba(247,236,218,.18);
-    margin-top:7px; overflow:hidden;
+    height:5px; border-radius:3px; background:rgba(247,236,218,.16);
+    margin-top:10px; overflow:hidden;
   }
   .progress i{
-    display:block; height:100%; width:0%; border-radius:2px;
-    background:#F4C361;
+    display:block; height:100%; width:0%; border-radius:3px;
+    background:linear-gradient(90deg, #F4C361, #E3963E);
+    box-shadow:0 0 8px rgba(244,195,97,.5);
     transition:width .4s linear;
   }
   .progress.indeterminate i{
@@ -158,25 +159,26 @@
     36%{ transform:scaleX(1); opacity:.6; }
   }
   .time{
-    display:block; margin-top:4px;
+    display:block; margin-top:5px;
     font-family:'Space Mono', monospace;
-    font-size:10.5px; color:rgba(247,236,218,.5);
+    font-size:11px; letter-spacing:.03em; color:rgba(247,236,218,.55);
   }
 
-  .transport{ display:flex; align-items:center; gap:6px; flex:0 0 auto; }
+  .transport{ display:flex; align-items:center; gap:8px; flex:0 0 auto; }
   .tbtn{
-    width:34px; height:34px; border-radius:50%; border:none;
+    width:36px; height:36px; border-radius:50%; border:none;
     background:transparent; cursor:pointer;
     display:flex; align-items:center; justify-content:center;
     color:#F7ECDA; transition:background .15s, transform .15s;
   }
-  .tbtn:hover{ background:rgba(247,236,218,.1); }
-  .tbtn svg{ width:16px; height:16px; fill:currentColor; }
+  .tbtn:hover{ background:rgba(247,236,218,.12); transform:scale(1.06); }
+  .tbtn svg{ width:17px; height:17px; fill:currentColor; }
   .tbtn.play{
-    width:42px; height:42px; background:#F7ECDA; color:#241609;
+    width:48px; height:48px; background:#F7ECDA; color:#241609;
+    box-shadow:0 4px 18px -4px rgba(244,195,97,.55);
   }
-  .tbtn.play:hover{ background:#fff; transform:scale(1.04); }
-  .tbtn.play svg{ width:18px; height:18px; }
+  .tbtn.play:hover{ background:#fff; transform:scale(1.06); }
+  .tbtn.play svg{ width:20px; height:20px; }
 
   @media (max-width:520px){
     .svc-links{ gap:14px; }
