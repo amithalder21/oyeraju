@@ -348,13 +348,26 @@
 
   updateMeta();
 
-  let count = 42;
   const liveEl = document.getElementById('liveCount');
-  setInterval(() => {
-    count += Math.floor(Math.random() * 5) - 2;
-    count = Math.max(18, Math.min(96, count));
-    liveEl.textContent = count + ' सिप पर · online';
-  }, 4000);
+  const presenceId = (function(){
+    let id = sessionStorage.getItem('oyeraju_pid');
+    if (!id) {
+      id = (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2) + Date.now());
+      sessionStorage.setItem('oyeraju_pid', id);
+    }
+    return id;
+  })();
+  async function pingPresence(){
+    try {
+      const res = await fetch('/api/presence?id=' + encodeURIComponent(presenceId), { method: 'POST' });
+      const data = await res.json();
+      if (typeof data.count === 'number') {
+        liveEl.textContent = data.count + ' सिप पर · online';
+      }
+    } catch (err) { /* keep last shown count on network failure */ }
+  }
+  pingPresence();
+  setInterval(pingPresence, 15000);
 
   const clockEl = document.getElementById('clockEl');
   function updateClock(){
