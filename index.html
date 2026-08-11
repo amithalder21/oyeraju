@@ -145,6 +145,11 @@
     background:#F4C361;
     transition:width .4s linear;
   }
+  .progress.indeterminate i{
+    width:30% !important;
+    animation:scrub 1.8s ease-in-out infinite alternate;
+  }
+  @keyframes scrub{ 0%{ margin-left:0%; } 100%{ margin-left:70%; } }
   .time{
     display:block; margin-top:4px;
     font-family:'Space Mono', monospace;
@@ -213,7 +218,7 @@
   <div class="meta">
     <div class="title" id="trackTitle">Loading…</div>
     <div class="sub" id="trackMovie">&nbsp;</div>
-    <div class="progress"><i id="progressFill"></i></div>
+    <div class="progress" id="progressBar"><i id="progressFill"></i></div>
     <div class="time" id="trackTime">0:00 / 0:00</div>
   </div>
   <div class="transport">
@@ -256,6 +261,7 @@
   const ytmLink = document.getElementById('ytmLink');
   const spotifyLink = document.getElementById('spotifyLink');
   const progressFill = document.getElementById('progressFill');
+  const progressBar = document.getElementById('progressBar');
   const timeEl = document.getElementById('trackTime');
   const thumbEl = document.getElementById('trackThumb');
   let progressTimer = null;
@@ -268,6 +274,22 @@
     spotifyLink.href = 'https://open.spotify.com/search/' + encodeURIComponent(t.title);
     thumbEl.src = 'https://i.ytimg.com/vi/' + t.id + '/hqdefault.jpg';
     thumbEl.alt = t.title + ' thumbnail';
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: t.title,
+        artist: t.movie,
+        album: 'Oye Raju',
+        artwork: [{ src: thumbEl.src, sizes: '480x360', type: 'image/jpeg' }]
+      });
+    }
+  }
+  const defaultTitle = document.title;
+  function updatePlaybackUI(){
+    setIcon();
+    document.title = playing ? ('▶ ' + playlist[idx].title + ' — Oye Raju') : defaultTitle;
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.playbackState = playing ? 'playing' : 'paused';
+    }
   }
   function setIcon(){
     mainPlaySvg.innerHTML = playing
@@ -342,8 +364,8 @@
       iframeEl.setAttribute('allow', 'autoplay; encrypted-media');
       document.body.appendChild(iframeEl);
     }
-    progressFill.style.width = '0%';
-    timeEl.textContent = '0:00 / 0:00';
+    progressBar.classList.add('indeterminate');
+    timeEl.textContent = 'लाइव';
     if (pendingPlay) { pendingPlay = false; play(); }
   }
 
@@ -359,7 +381,7 @@
       document.getElementById('player').src =
         'https://www.youtube.com/embed/' + t.id + '?autoplay=1&controls=0&playsinline=1&rel=0&modestbranding=1';
       playing = true;
-      setIcon();
+      updatePlaybackUI();
       updateMeta();
       return;
     }
@@ -373,20 +395,20 @@
       ytPlayer.playVideo();
     }
     playing = true;
-    setIcon();
+    updatePlaybackUI();
     updateMeta();
   }
   function pause(){
     if (usingFallback) {
       document.getElementById('player').src = 'about:blank';
       playing = false;
-      setIcon();
+      updatePlaybackUI();
       updateMeta();
       return;
     }
     if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') ytPlayer.pauseVideo();
     playing = false;
-    setIcon();
+    updatePlaybackUI();
     updateMeta();
   }
   function toggle(){ playing ? pause() : play(); }
@@ -396,6 +418,19 @@
   document.getElementById('playBtn').addEventListener('click', toggle);
   document.getElementById('nextBtn').addEventListener('click', next);
   document.getElementById('prevBtn').addEventListener('click', prev);
+
+  document.addEventListener('keydown', function(e){
+    if (e.code === 'Space') { e.preventDefault(); toggle(); }
+    else if (e.code === 'ArrowRight') { e.preventDefault(); next(); }
+    else if (e.code === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.setActionHandler('play', function(){ if (!playing) play(); });
+    navigator.mediaSession.setActionHandler('pause', function(){ if (playing) pause(); });
+    navigator.mediaSession.setActionHandler('previoustrack', prev);
+    navigator.mediaSession.setActionHandler('nexttrack', next);
+  }
 
   updateMeta();
 
