@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ओए राजू — Oye Raju</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%98%95%3C/text%3E%3C/svg%3E">
 <meta name="description" content="90s–2000s Bollywood bangers off the college-crowd chai tapri. oyeraju.wtf">
 <meta name="theme-color" content="#0E1A3D">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -185,7 +186,7 @@
 
 <div class="topbar">
   <div class="clock" id="clockEl">--:--</div>
-  <div class="live"><span class="dot" aria-hidden="true"></span><span id="liveCount">42 सिप पर · online</span></div>
+  <div class="live"><span class="dot" aria-hidden="true"></span><span id="liveCount">42 सिप पर ऑनलाइन</span></div>
   <div class="svc-links">
     <a id="ytmLink" class="ytm" href="#" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4 10.6l-6 3.4V8l6 3.4v1.2z"/></svg>
@@ -233,6 +234,7 @@
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
   const playlist = [
+    { title: "Oye Raju Pyar Na Kariyo", movie: "Hadh Kar Di Aapne (2000) · Anand Raj Anand", id: "nNhv8A_rJTg" },
     { title: "Chaiyya Chaiyya", movie: "Dil Se (1998) · Sukhwinder Singh", id: "JS68-1RVTNY" },
     { title: "Tanha Tanha", movie: "Rangeela (1995) · Asha Bhosle", id: "DEU1phkgmbE" },
     { title: "Tu Cheez Badi Hai Mast Mast", movie: "Mohra (1994) · Udit Narayan", id: "fT4vP4PnLxg" },
@@ -308,7 +310,6 @@
         autoplay: 0, controls: 0, playsinline: 1, rel: 0, modestbranding: 1,
         origin: window.location.origin
       },
-      host: 'https://www.youtube.com',
       events: {
         onReady: function(){
           if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = null; }
@@ -329,6 +330,18 @@
     if (usingFallback) return;
     usingFallback = true;
     stopProgressPolling();
+    if (ytPlayer && typeof ytPlayer.destroy === 'function') {
+      try { ytPlayer.destroy(); } catch (err) { /* ignore */ }
+    }
+    ytPlayer = null;
+    if (!document.getElementById('player')) {
+      const iframeEl = document.createElement('iframe');
+      iframeEl.id = 'player';
+      iframeEl.title = 'audio';
+      iframeEl.style.cssText = 'position:fixed;left:-9999px;top:-9999px;width:320px;height:180px;border:0;';
+      iframeEl.setAttribute('allow', 'autoplay; encrypted-media');
+      document.body.appendChild(iframeEl);
+    }
     progressFill.style.width = '0%';
     timeEl.textContent = '0:00 / 0:00';
     if (pendingPlay) { pendingPlay = false; play(); }
@@ -400,7 +413,7 @@
       const res = await fetch('/api/presence?id=' + encodeURIComponent(presenceId), { method: 'POST' });
       const data = await res.json();
       if (typeof data.count === 'number') {
-        liveEl.textContent = data.count + ' सिप पर · online';
+        liveEl.textContent = data.count + ' सिप पर ऑनलाइन';
       }
     } catch (err) { /* keep last shown count on network failure */ }
   }
