@@ -400,6 +400,15 @@ const playlist = [
     }
   })(playlist);
 
+  const BRAND_CONFIG = {
+    'oyeraju.fun': { hindi: 'ओए राजू', english: 'Oye Raju' },
+    'oyebunny.fun': { hindi: 'ओए बनी', english: 'Oye Bunny' }
+  };
+  const DEFAULT_BRAND = BRAND_CONFIG['oyeraju.fun'];
+  const brand = BRAND_CONFIG[location.hostname.replace(/^www\./, '')] || DEFAULT_BRAND;
+  document.querySelector('.wordmark h1').textContent = brand.hindi;
+  document.title = brand.hindi + ' — ' + brand.english;
+
   let idx = 0, playing = false;
   let ytPlayer = null, playerReady = false, pendingPlay = false, loadedIdx = 0;
   let usingFallback = false, fallbackTimer = null;
