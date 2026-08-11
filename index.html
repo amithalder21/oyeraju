@@ -246,7 +246,7 @@
   ];
 
   let idx = 0, playing = false;
-  let ytPlayer = null, apiReady = false, pendingPlay = false, loadedIdx = 0;
+  let ytPlayer = null, playerReady = false, pendingPlay = false, loadedIdx = 0;
   const titleEl = document.getElementById('trackTitle');
   const movieEl = document.getElementById('trackMovie');
   const mainPlaySvg = document.getElementById('mainPlaySvg');
@@ -301,7 +301,6 @@
 
   function onYouTubeIframeAPIReady(){
     if (ytPlayer) return;
-    apiReady = true;
     ytPlayer = new YT.Player('player', {
       videoId: playlist[idx].id,
       playerVars: {
@@ -310,11 +309,14 @@
       },
       host: 'https://www.youtube.com',
       events: {
-        onReady: function(){ if (pendingPlay) { pendingPlay = false; play(); } },
+        onReady: function(){
+          playerReady = true;
+          loadedIdx = idx;
+          if (pendingPlay) { pendingPlay = false; play(); }
+        },
         onStateChange: onPlayerStateChange
       }
     });
-    loadedIdx = idx;
   }
   window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 
@@ -325,7 +327,7 @@
   }
 
   function play(){
-    if (!apiReady || !ytPlayer || typeof ytPlayer.playVideo !== 'function') { pendingPlay = true; return; }
+    if (!playerReady || !ytPlayer) { pendingPlay = true; return; }
     if (loadedIdx !== idx) {
       ytPlayer.loadVideoById(playlist[idx].id);
       loadedIdx = idx;
