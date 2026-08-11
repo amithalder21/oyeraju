@@ -392,6 +392,13 @@ const playlist = [
     { title: "Kya kehna eng sub", movie: "", id: "l1buo7tkw2M" }
   ];
 
+  (function shuffle(arr){
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  })(playlist);
+
   let idx = 0, playing = false;
   let ytPlayer = null, playerReady = false, pendingPlay = false, loadedIdx = 0;
   let usingFallback = false, fallbackTimer = null;
