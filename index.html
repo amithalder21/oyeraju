@@ -107,6 +107,7 @@
     box-shadow:inset 0 0 0 2px rgba(247,236,218,.15);
   }
   .thumb svg{ width:24px; height:24px; }
+  .thumb img{ width:100%; height:100%; border-radius:50%; object-fit:cover; }
 
   .meta{ flex:1 1 auto; min-width:0; }
   .meta .title{
@@ -404,7 +405,7 @@
 
 <div class="player">
   <div class="thumb">
-    <svg viewBox="0 0 24 24" fill="#2A1B10"><path d="M4 9h13a3 3 0 010 6h-1.2A6 6 0 015 15H4V9zm2 2v2h6.5A2 2 0 0016 11H6z"/></svg>
+    <img id="trackThumb" src="" alt="" />
   </div>
   <div class="meta">
     <div class="title" id="trackTitle">Loading…</div>
@@ -451,6 +452,7 @@
   const spotifyLink = document.getElementById('spotifyLink');
   const progressFill = document.getElementById('progressFill');
   const timeEl = document.getElementById('trackTime');
+  const thumbEl = document.getElementById('trackThumb');
   let progressTimer = null;
 
   function updateMeta(){
@@ -459,6 +461,8 @@
     movieEl.textContent = t.movie;
     ytmLink.href = 'https://music.youtube.com/search?q=' + encodeURIComponent(t.title);
     spotifyLink.href = 'https://open.spotify.com/search/' + encodeURIComponent(t.title);
+    thumbEl.src = 'https://i.ytimg.com/vi/' + t.id + '/hqdefault.jpg';
+    thumbEl.alt = t.title + ' thumbnail';
   }
   function setIcon(){
     mainPlaySvg.innerHTML = playing
