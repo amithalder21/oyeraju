@@ -123,11 +123,15 @@
     margin-top:7px; overflow:hidden;
   }
   .progress i{
-    display:block; height:100%; width:35%; border-radius:2px;
+    display:block; height:100%; width:0%; border-radius:2px;
     background:#F4C361;
-    animation:scrub 14s linear infinite;
+    transition:width .4s linear;
   }
-  @keyframes scrub{ 0%{ width:4%; } 100%{ width:96%; } }
+  .time{
+    display:block; margin-top:4px;
+    font-family:'Space Mono', monospace;
+    font-size:10.5px; color:rgba(247,236,218,.5);
+  }
 
   .transport{ display:flex; align-items:center; gap:6px; flex:0 0 auto; }
   .tbtn{
@@ -153,7 +157,7 @@
   }
   @media (prefers-reduced-motion: reduce){
     .bg svg{ animation:none; }
-    .bulbGlow, .steamPuff, .live .dot, .progress i{ animation:none !important; }
+    .bulbGlow, .steamPuff, .live .dot{ animation:none !important; }
   }
 </style>
 </head>
@@ -405,7 +409,8 @@
   <div class="meta">
     <div class="title" id="trackTitle">Loading…</div>
     <div class="sub" id="trackMovie">&nbsp;</div>
-    <div class="progress"><i></i></div>
+    <div class="progress"><i id="progressFill"></i></div>
+    <div class="time" id="trackTime">0:00 / 0:00</div>
   </div>
   <div class="transport">
     <button class="tbtn" id="prevBtn" aria-label="Previous song">
@@ -444,6 +449,9 @@
   const mainPlaySvg = document.getElementById('mainPlaySvg');
   const ytmLink = document.getElementById('ytmLink');
   const spotifyLink = document.getElementById('spotifyLink');
+  const progressFill = document.getElementById('progressFill');
+  const timeEl = document.getElementById('trackTime');
+  let progressTimer = null;
 
   function updateMeta(){
     const t = playlist[idx];
@@ -456,6 +464,26 @@
     mainPlaySvg.innerHTML = playing
       ? '<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>'
       : '<path d="M8 5v14l11-7z"/>';
+  }
+
+  function formatTime(sec){
+    if (!isFinite(sec) || sec < 0) sec = 0;
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return m + ':' + String(s).padStart(2, '0');
+  }
+  function startProgressPolling(){
+    stopProgressPolling();
+    progressTimer = setInterval(() => {
+      if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
+      const current = ytPlayer.getCurrentTime();
+      const duration = ytPlayer.getDuration();
+      progressFill.style.width = (duration > 0 ? (current / duration) * 100 : 0) + '%';
+      timeEl.textContent = formatTime(current) + ' / ' + formatTime(duration);
+    }, 500);
+  }
+  function stopProgressPolling(){
+    if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
   }
 
   function onYouTubeIframeAPIReady(){
@@ -473,6 +501,8 @@
   window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 
   function onPlayerStateChange(e){
+    if (e.data === YT.PlayerState.PLAYING) startProgressPolling();
+    else stopProgressPolling();
     if (e.data === YT.PlayerState.ENDED) next();
   }
 
@@ -481,6 +511,8 @@
     if (loadedIdx !== idx) {
       ytPlayer.loadVideoById(playlist[idx].id);
       loadedIdx = idx;
+      progressFill.style.width = '0%';
+      timeEl.textContent = '0:00 / 0:00';
     } else {
       ytPlayer.playVideo();
     }
