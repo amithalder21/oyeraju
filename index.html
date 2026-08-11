@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ओए राजू — Oye Raju</title>
+<meta name="description" content="90s–2000s Bollywood bangers off the college-crowd chai tapri. oyeraju.wtf">
+<meta name="theme-color" content="#0E1A3D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Rubik:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; overflow:hidden; background:#120e1e; }
+  body{
+    font-family:'Rubik', sans-serif;
+    color:#F7ECDA;
+    -webkit-font-smoothing:antialiased;
+  }
+  :focus-visible{ outline:3px solid #F4C361; outline-offset:3px; }
+
+  .bg{
+    position:fixed; inset:0; width:100%; height:100%;
+    display:block;
+  }
+  .bg svg{
+    width:100%; height:100%; display:block;
+    animation:kenburns 46s ease-in-out infinite alternate;
+    transform-origin:55% 60%;
+  }
+  @keyframes kenburns{ 0%{ transform:scale(1.02); } 100%{ transform:scale(1.09); } }
+
+  .steamPuff{ opacity:0; animation:puff 3.6s ease-in infinite; transform-box:fill-box; transform-origin:bottom center; }
+  .steamPuff.p2{ animation-delay:1.2s; } .steamPuff.p3{ animation-delay:2.3s; }
+  @keyframes puff{
+    0%{ opacity:0; transform:translateY(0) scale(.6); }
+    20%{ opacity:.65; }
+    100%{ opacity:0; transform:translateY(-40px) scale(1.3) translateX(5px); }
+  }
+  .bulbGlow{ animation:twinkle 3s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
+  .bulbGlow:nth-child(2n){ animation-delay:.7s; }
+  .bulbGlow:nth-child(3n){ animation-delay:1.4s; }
+  @keyframes twinkle{ 0%,100%{ opacity:.55; } 50%{ opacity:1; } }
+
+  /* ===== overlay chrome ===== */
+  .topbar{
+    position:fixed; top:26px; left:0; right:0;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 26px;
+    z-index:5;
+  }
+  .live{
+    position:absolute; left:50%; top:0; transform:translateX(-50%);
+    display:flex; align-items:center; gap:8px;
+    font-family:'Space Mono', monospace; font-size:13px;
+    color:#F7ECDA; opacity:.92;
+  }
+  .live .dot{
+    width:8px; height:8px; border-radius:50%; background:#5FD98A;
+    box-shadow:0 0 0 0 rgba(95,217,138,.6);
+    animation:pulse 1.8s ease-out infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(95,217,138,.55); } 70%{ box-shadow:0 0 0 8px rgba(95,217,138,0); } 100%{ box-shadow:0 0 0 0 rgba(95,217,138,0); }
+  }
+  .svc-links{ margin-left:auto; display:flex; gap:22px; }
+  .svc-links a{
+    color:#F7ECDA; text-decoration:none; font-size:13.5px; font-weight:500;
+    opacity:.88; display:flex; align-items:center; gap:6px;
+    transition:opacity .15s;
+  }
+  .svc-links a:hover{ opacity:1; }
+  .svc-links svg{ width:14px; height:14px; fill:currentColor; }
+
+  .wordmark{
+    position:fixed; top:16%; left:50%; transform:translate(-50%,0);
+    z-index:4; text-align:center; width:100%; pointer-events:none;
+  }
+  .wordmark h1{
+    font-family:'Baloo 2', sans-serif; font-weight:800;
+    font-size:clamp(56px, 13vw, 150px);
+    line-height:.98;
+    color:#FBF4E6;
+    text-shadow:0 6px 40px rgba(0,0,0,.5), 0 2px 10px rgba(0,0,0,.35), 0 0 60px rgba(209,52,43,.35);
+    letter-spacing:.01em;
+  }
+
+  /* ===== bottom floating player ===== */
+  .player{
+    position:fixed; left:50%; bottom:30px; transform:translateX(-50%);
+    z-index:6;
+    display:flex; align-items:center; gap:16px;
+    width:min(640px, 92vw);
+    background:linear-gradient(180deg, rgba(62,36,21,.72), rgba(30,17,10,.8));
+    backdrop-filter:blur(18px) saturate(140%);
+    -webkit-backdrop-filter:blur(18px) saturate(140%);
+    border:1px solid rgba(247,236,218,.12);
+    border-radius:60px;
+    padding:10px 16px 10px 10px;
+    box-shadow:0 20px 50px -18px rgba(0,0,0,.65);
+  }
+  .thumb{
+    width:52px; height:52px; border-radius:50%;
+    background:radial-gradient(circle at 32% 30%, #E3963E, #9C5326 75%);
+    flex:0 0 auto;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:inset 0 0 0 2px rgba(247,236,218,.15);
+  }
+  .thumb svg{ width:24px; height:24px; }
+
+  .meta{ flex:1 1 auto; min-width:0; }
+  .meta .title{
+    font-family:'Baloo 2', sans-serif; font-weight:700; font-size:16px;
+    color:#FBF4E6; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .meta .sub{
+    font-size:11.5px; color:rgba(247,236,218,.6);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    margin-top:1px;
+  }
+  .progress{
+    height:3px; border-radius:2px; background:rgba(247,236,218,.18);
+    margin-top:7px; overflow:hidden;
+  }
+  .progress i{
+    display:block; height:100%; width:35%; border-radius:2px;
+    background:#F4C361;
+    animation:scrub 14s linear infinite;
+  }
+  @keyframes scrub{ 0%{ width:4%; } 100%{ width:96%; } }
+
+  .transport{ display:flex; align-items:center; gap:6px; flex:0 0 auto; }
+  .tbtn{
+    width:34px; height:34px; border-radius:50%; border:none;
+    background:transparent; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    color:#F7ECDA; transition:background .15s, transform .15s;
+  }
+  .tbtn:hover{ background:rgba(247,236,218,.1); }
+  .tbtn svg{ width:16px; height:16px; fill:currentColor; }
+  .tbtn.play{
+    width:42px; height:42px; background:#F7ECDA; color:#241609;
+  }
+  .tbtn.play:hover{ background:#fff; transform:scale(1.04); }
+  .tbtn.play svg{ width:18px; height:18px; }
+
+  @media (max-width:520px){
+    .wordmark{ top:14%; }
+    .svc-links{ gap:14px; }
+    .svc-links a span{ display:none; }
+    .player{ gap:10px; padding:8px 12px 8px 8px; }
+    .meta .title{ font-size:14px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .bg svg{ animation:none; }
+    .bulbGlow, .steamPuff, .live .dot, .progress i{ animation:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg" aria-hidden="true">
+<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Raju the tapri waiter dashing with a tray of chai while college students hang out at the roadside stall at dusk">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0E1A3D"/>
+      <stop offset="42%" stop-color="#1F3B6E"/>
+      <stop offset="72%" stop-color="#B23A2E"/>
+      <stop offset="100%" stop-color="#E8622E"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF8A4C" stop-opacity=".85"/>
+      <stop offset="60%" stop-color="#D1342B" stop-opacity=".3"/>
+      <stop offset="100%" stop-color="#D1342B" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bulb" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFE7B0" stop-opacity=".95"/>
+      <stop offset="55%" stop-color="#F4C361" stop-opacity=".35"/>
+      <stop offset="100%" stop-color="#F4C361" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="vigTop" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0B0812" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#0B0812" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="vigBottom" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0B0812" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#0B0812" stop-opacity=".78"/>
+    </linearGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .05 0"/>
+    </filter>
+  </defs>
+
+  <rect x="0" y="0" width="1600" height="900" fill="url(#sky)"/>
+  <circle cx="800" cy="560" r="300" fill="url(#sun)"/>
+
+  <!-- distant skyline -->
+  <g fill="#221732" opacity=".92">
+    <rect x="0" y="480" width="90" height="200"/>
+    <rect x="95" y="430" width="70" height="250"/>
+    <rect x="175" y="470" width="60" height="210"/>
+    <rect x="1370" y="440" width="80" height="240"/>
+    <rect x="1455" y="470" width="70" height="210"/>
+    <rect x="1520" y="410" width="80" height="270"/>
+  </g>
+  <g fill="#F4C361" opacity=".45">
+    <rect x="14" y="510" width="9" height="12"/><rect x="40" y="540" width="9" height="12"/>
+    <rect x="112" y="470" width="9" height="12"/><rect x="140" y="510" width="9" height="12"/>
+    <rect x="1390" y="480" width="9" height="12"/><rect x="1476" y="510" width="9" height="12"/>
+    <rect x="1540" y="450" width="9" height="12"/><rect x="1560" y="500" width="9" height="12"/>
+  </g>
+  <g stroke="#221732" stroke-width="4" opacity=".8">
+    <line x1="150" y1="470" x2="150" y2="430"/><line x1="140" y1="440" x2="160" y2="440"/>
+    <line x1="1500" y1="440" x2="1500" y2="405"/><line x1="1490" y1="415" x2="1510" y2="415"/>
+  </g>
+
+  <!-- foliage frame, right side -->
+  <g fill="#16261C" opacity=".95">
+    <path d="M1440,900 C1420,700 1470,560 1560,470 C1610,600 1600,760 1600,900 Z"/>
+    <path d="M1250,900 C1260,760 1330,660 1420,600 C1440,720 1400,830 1380,900 Z"/>
+  </g>
+  <g stroke="#20361f" stroke-width="3" opacity=".5" fill="none">
+    <path d="M1470,860 C1500,760 1540,680 1580,610"/>
+    <path d="M1300,860 C1330,780 1370,720 1410,660"/>
+  </g>
+
+  <!-- string lights -->
+  <g stroke="#F4C361" stroke-width="1.5" opacity=".45" fill="none">
+    <path d="M460,300 Q560,360 660,300 T860,300 T1060,300 T1260,300"/>
+  </g>
+  <g>
+    <circle class="bulbGlow" cx="480" cy="308" r="14" fill="url(#bulb)"/>
+    <circle class="bulbGlow" cx="580" cy="352" r="14" fill="url(#bulb)"/>
+    <circle class="bulbGlow" cx="680" cy="300" r="14" fill="url(#bulb)"/>
+    <circle class="bulbGlow" cx="780" cy="348" r="14" fill="url(#bulb)"/>
+    <circle class="bulbGlow" cx="880" cy="300" r="14" fill="url(#bulb)"/>
+    <circle class="bulbGlow" cx="980" cy="350" r="14" fill="url(#bulb)"/>
+    <circle class="bulbGlow" cx="1080" cy="300" r="14" fill="url(#bulb)"/>
+    <circle class="bulbGlow" cx="1180" cy="348" r="14" fill="url(#bulb)"/>
+    <circle class="bulbGlow" cx="1240" cy="300" r="14" fill="url(#bulb)"/>
+    <circle cx="480" cy="308" r="3.5" fill="#FFE7B0"/><circle cx="580" cy="352" r="3.5" fill="#FFE7B0"/>
+    <circle cx="680" cy="300" r="3.5" fill="#FFE7B0"/><circle cx="780" cy="348" r="3.5" fill="#FFE7B0"/>
+    <circle cx="880" cy="300" r="3.5" fill="#FFE7B0"/><circle cx="980" cy="350" r="3.5" fill="#FFE7B0"/>
+    <circle cx="1080" cy="300" r="3.5" fill="#FFE7B0"/><circle cx="1180" cy="348" r="3.5" fill="#FFE7B0"/>
+    <circle cx="1240" cy="300" r="3.5" fill="#FFE7B0"/>
+  </g>
+
+  <!-- tapri roof + structure -->
+  <path d="M420,440 L470,400 L520,440 L570,400 L620,440 L670,400 L720,440 L770,400 L820,440 L870,400 L920,440 L970,400 L1020,440 L1070,400 L1120,440 L1120,470 L420,470 Z" fill="#D1342B"/>
+  <path d="M420,440 L470,400 L520,440 L570,400 L620,440 L670,400 L720,440 L770,400 L820,440 L870,400 L920,440 L970,400 L1020,440 L1070,400 L1120,440" fill="none" stroke="#8a1f18" stroke-width="3"/>
+  <rect x="420" y="470" width="700" height="10" fill="#F4C361" opacity=".9"/>
+  <rect x="440" y="470" width="16" height="200" fill="#3E2415"/>
+  <rect x="1080" y="470" width="16" height="200" fill="#3E2415"/>
+
+  <!-- hanging bulb over the counter, key light -->
+  <line x1="770" y1="470" x2="770" y2="540" stroke="#2A1B10" stroke-width="2"/>
+  <circle class="bulbGlow" cx="770" cy="548" r="46" fill="url(#bulb)"/>
+  <circle cx="770" cy="548" r="7" fill="#FFE7B0"/>
+
+  <!-- back shelf -->
+  <rect x="480" y="480" width="600" height="16" fill="#54301C" opacity=".9"/>
+  <g fill="#DD9A5C" opacity=".85">
+    <rect x="520" y="460" width="20" height="20" rx="3"/><rect x="560" y="455" width="18" height="25" rx="3"/>
+    <rect x="960" y="458" width="18" height="22" rx="3"/><rect x="1000" y="452" width="20" height="28" rx="3"/>
+  </g>
+
+  <!-- counter -->
+  <rect x="420" y="600" width="700" height="120" fill="#54301C"/>
+  <g stroke="#3E2415" stroke-width="3" opacity=".55">
+    <line x1="470" y1="600" x2="470" y2="720"/><line x1="520" y1="600" x2="520" y2="720"/>
+    <line x1="570" y1="600" x2="570" y2="720"/><line x1="620" y1="600" x2="620" y2="720"/>
+    <line x1="670" y1="600" x2="670" y2="720"/><line x1="720" y1="600" x2="720" y2="720"/>
+    <line x1="770" y1="600" x2="770" y2="720"/><line x1="820" y1="600" x2="820" y2="720"/>
+    <line x1="870" y1="600" x2="870" y2="720"/><line x1="920" y1="600" x2="920" y2="720"/>
+    <line x1="970" y1="600" x2="970" y2="720"/><line x1="1020" y1="600" x2="1020" y2="720"/>
+    <line x1="1070" y1="600" x2="1070" y2="720"/>
+  </g>
+  <rect x="432" y="720" width="26" height="70" fill="#2A1B10"/>
+  <rect x="1082" y="720" width="26" height="70" fill="#2A1B10"/>
+
+  <!-- kettle with steam, decorative -->
+  <g transform="translate(700,538)">
+    <g class="steamPuff p1"><path d="M14,0 Q22,-14 14,-28 Q6,-38 14,-52" stroke="#F7ECDA" stroke-width="4" fill="none" stroke-linecap="round" opacity=".7"/></g>
+    <g class="steamPuff p2"><path d="M36,3 Q44,-11 36,-25 Q28,-35 36,-49" stroke="#F7ECDA" stroke-width="4" fill="none" stroke-linecap="round" opacity=".7"/></g>
+    <g class="steamPuff p3"><path d="M58,0 Q66,-14 58,-28 Q50,-38 58,-52" stroke="#F7ECDA" stroke-width="4" fill="none" stroke-linecap="round" opacity=".7"/></g>
+    <path d="M2,54 Q0,18 40,16 Q80,18 78,54 Q80,64 40,64 Q0,64 2,54 Z" fill="#9C5326"/>
+    <ellipse cx="40" cy="16" rx="21" ry="6" fill="#DD9A5C"/>
+    <path d="M78,34 Q100,28 100,42 Q100,53 78,48" fill="#9C5326"/>
+    <path d="M4,26 Q-14,28 -8,40 Q-2,48 8,42" fill="none" stroke="#DD9A5C" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <!-- stacked kulhads + milk can -->
+  <g transform="translate(500,586)">
+    <path d="M0,30 L24,30 L20,6 L4,6 Z" fill="#C97A3F"/>
+    <path d="M8,36 L34,36 L31,10 L15,10 Z" fill="#DD9A5C"/>
+  </g>
+  <g transform="translate(920,580)">
+    <rect x="0" y="8" width="26" height="34" rx="3" fill="#B7B9C0"/>
+    <ellipse cx="13" cy="8" rx="13" ry="4.5" fill="#D9DBE0"/>
+  </g>
+
+  <!-- ===== foreground: college crowd ===== -->
+
+  <!-- student sitting on a crate, kulhad in hand -->
+  <g transform="translate(120,560)">
+    <rect x="20" y="230" width="90" height="55" fill="#3E2415"/>
+    <line x1="20" y1="252" x2="110" y2="252" stroke="#2A1B10" stroke-width="2.5"/>
+    <line x1="20" y1="268" x2="110" y2="268" stroke="#2A1B10" stroke-width="2.5"/>
+    <rect x="-14" y="190" width="46" height="60" rx="10" fill="#C4472A"/>
+    <rect x="-14" y="190" width="46" height="20" rx="8" fill="#a83a22"/>
+    <path d="M40,232 Q22,214 44,196 L58,218 Z" fill="#B5794F"/>
+    <path d="M100,232 Q118,214 96,196 L82,218 Z" fill="#B5794F"/>
+    <rect x="44" y="132" width="66" height="92" rx="24" fill="#2E7D6B"/>
+    <path d="M48,160 Q16,168 20,192 Q24,208 48,200" fill="#2E7D6B"/>
+    <g transform="translate(6,150) rotate(-16)">
+      <path d="M0,20 Q-2,6 12,4 Q26,6 24,20 Q26,26 12,26 Q0,26 0,20 Z" fill="#9C5326"/>
+    </g>
+    <path d="M94,204 Q116,216 104,238" fill="none" stroke="#B5794F" stroke-width="15" stroke-linecap="round"/>
+    <circle cx="76" cy="108" r="30" fill="#B5794F"/>
+    <path d="M46,100 Q48,66 76,66 Q104,66 104,100 Q88,84 76,84 Q64,84 46,100 Z" fill="#221732"/>
+    <circle cx="66" cy="112" r="3" fill="#221732"/><circle cx="88" cy="112" r="3" fill="#221732"/>
+  </g>
+
+  <!-- Raju — the tapri's waiter, mid-dash with the tray, looking back as if someone just shouted for him -->
+  <g transform="translate(300,500)">
+    <rect x="10" y="270" width="28" height="96" rx="8" fill="#22304A"/>
+    <rect x="56" y="270" width="28" height="96" rx="8" fill="#22304A"/>
+    <rect x="6" y="356" width="36" height="18" rx="6" fill="#170F24"/>
+    <rect x="52" y="356" width="36" height="18" rx="6" fill="#170F24"/>
+    <rect x="0" y="160" width="100" height="118" rx="20" fill="#F7ECDA"/>
+    <rect x="0" y="222" width="100" height="58" rx="14" fill="#D1342B"/>
+    <line x1="0" y1="232" x2="100" y2="232" stroke="#8a1f18" stroke-width="3"/>
+    <rect x="40" y="160" width="20" height="118" fill="#EADFC7" opacity=".6"/>
+    <path d="M8,182 Q-30,190 -22,220 Q-14,240 10,228" fill="none" stroke="#B5794F" stroke-width="15" stroke-linecap="round"/>
+    <g transform="translate(-36,206)">
+      <path d="M0,18 Q-2,6 10,4 Q22,6 20,18 Q22,24 10,24 Q0,24 0,18 Z" fill="#9C5326"/>
+    </g>
+    <path d="M92,178 Q126,158 128,120" fill="none" stroke="#B5794F" stroke-width="15" stroke-linecap="round"/>
+    <ellipse cx="128" cy="104" rx="30" ry="10" fill="#DD9A5C"/>
+    <ellipse cx="128" cy="104" rx="24" ry="7" fill="#C97A3F"/>
+    <path d="M112,100 L118,86 L124,100 Z" fill="#9C5326"/>
+    <path d="M134,100 L140,86 L146,100 Z" fill="#9C5326"/>
+    <circle cx="50" cy="130" r="32" fill="#9C6B4A"/>
+    <path d="M18,122 Q18,86 50,86 Q82,86 82,122 Q64,106 50,106 Q36,106 18,122 Z" fill="#221732"/>
+    <circle cx="38" cy="134" r="3.4" fill="#221732"/><circle cx="62" cy="134" r="3.4" fill="#221732"/>
+    <path d="M34,146 Q42,152 50,148 Q58,152 66,146 Q58,144 50,146 Q42,144 34,146 Z" fill="#221732"/>
+  </g>
+
+  <!-- "Oye Raju!" shout, painted straight onto the wall behind him -->
+  <text x="300" y="470" font-family="'Baloo 2', sans-serif" font-weight="800" font-size="34" fill="#F4C361" opacity=".5" transform="rotate(-3 300 470)">ओए राजू!</text>
+
+  <!-- student on a parked scooter, phone in hand -->
+  <g transform="translate(1220,540)">
+    <ellipse cx="60" cy="320" rx="150" ry="14" fill="#000" opacity=".2"/>
+    <circle cx="10" cy="300" r="34" fill="none" stroke="#170F24" stroke-width="9"/>
+    <circle cx="150" cy="300" r="34" fill="none" stroke="#170F24" stroke-width="9"/>
+    <path d="M10,300 L60,300 L96,230 L150,300 M60,300 L70,240 L120,232" fill="none" stroke="#3E2415" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="44" y="252" width="52" height="20" rx="8" fill="#C4472A"/>
+
+    <rect x="30" y="150" width="56" height="90" rx="18" fill="#E3963E"/>
+    <rect x="48" y="150" width="20" height="90" fill="#F4C361" opacity=".55"/>
+    <path d="M34,178 Q4,182 8,204 Q12,220 34,214" fill="none" stroke="#B5794F" stroke-width="13" stroke-linecap="round"/>
+    <path d="M82,178 Q98,190 88,208" fill="none" stroke="#B5794F" stroke-width="13" stroke-linecap="round"/>
+    <rect x="82" y="196" width="16" height="24" rx="3" fill="#170F24" transform="rotate(18 90 208)"/>
+    <rect x="6" y="150" width="26" height="40" rx="6" fill="#2E7D6B"/>
+
+    <circle cx="58" cy="118" r="28" fill="#B5794F"/>
+    <path d="M30,112 Q30,80 58,80 Q86,80 86,112 Q70,96 58,96 Q46,96 30,112 Z" fill="#221732"/>
+    <circle cx="48" cy="122" r="3" fill="#221732"/><circle cx="68" cy="122" r="3" fill="#221732"/>
+  </g>
+
+  <!-- low-detail passerby for crowd depth -->
+  <g transform="translate(1010,600)" opacity=".55" fill="#170F24">
+    <circle cx="0" cy="20" r="14"/>
+    <path d="M-20,90 Q-20,42 0,42 Q20,42 20,90 Z"/>
+  </g>
+
+  <rect x="0" y="0" width="1600" height="900" fill="url(#vigTop)"/>
+  <rect x="0" y="0" width="1600" height="900" fill="url(#vigBottom)"/>
+  <rect x="0" y="0" width="1600" height="900" filter="url(#grain)"/>
+</svg>
+</div>
+
+<div class="topbar">
+  <div class="live"><span class="dot" aria-hidden="true"></span><span id="liveCount">42 सिप पर · online</span></div>
+  <div class="svc-links">
+    <a id="ytmLink" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4 10.6l-6 3.4V8l6 3.4v1.2z"/></svg>
+      <span>YT Music</span>
+    </a>
+    <a id="spotifyLink" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+      <span>Spotify</span>
+    </a>
+  </div>
+</div>
+
+<div class="wordmark"><h1>ओए राजू</h1></div>
+
+<div class="player">
+  <div class="thumb">
+    <svg viewBox="0 0 24 24" fill="#2A1B10"><path d="M4 9h13a3 3 0 010 6h-1.2A6 6 0 015 15H4V9zm2 2v2h6.5A2 2 0 0016 11H6z"/></svg>
+  </div>
+  <div class="meta">
+    <div class="title" id="trackTitle">Loading…</div>
+    <div class="sub" id="trackMovie">&nbsp;</div>
+    <div class="progress"><i></i></div>
+  </div>
+  <div class="transport">
+    <button class="tbtn" id="prevBtn" aria-label="Previous song">
+      <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zM20 6L10 12l10 6z"/></svg>
+    </button>
+    <button class="tbtn play" id="playBtn" aria-label="Play or pause">
+      <svg id="mainPlaySvg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+    <button class="tbtn" id="nextBtn" aria-label="Next song">
+      <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM4 6l10 6-10 6z"/></svg>
+    </button>
+  </div>
+</div>
+
+<iframe id="player" title="audio" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;" allow="autoplay"></iframe>
+
+<script>
+  const playlist = [
+    { title: "Chaiyya Chaiyya", movie: "Dil Se (1998) · Sukhwinder Singh", q: "Chaiyya Chaiyya Dil Se official" },
+    { title: "Tanha Tanha", movie: "Rangeela (1995) · Asha Bhosle", q: "Tanha Tanha Rangeela official" },
+    { title: "Tu Cheez Badi Hai Mast Mast", movie: "Mohra (1994) · Udit Narayan", q: "Tu Cheez Badi Hai Mast Mast Mohra official" },
+    { title: "Ankhiyon Se Goli Maare", movie: "Dulhe Raja (1998) · Udit Narayan", q: "Ankhiyon Se Goli Maare official" },
+    { title: "Choli Ke Peeche", movie: "Khalnayak (1993) · Ila Arun", q: "Choli Ke Peeche Khalnayak official" },
+    { title: "Chura Ke Dil Mera", movie: "Main Khiladi Tu Anari (1994)", q: "Chura Ke Dil Mera official" },
+    { title: "Ek Chatur Naar", movie: "Padosan (1968) · Kishore Kumar", q: "Ek Chatur Naar Padosan" },
+    { title: "Kajra Re", movie: "Bunty Aur Babli (2005)", q: "Kajra Re Bunty Aur Babli official" },
+    { title: "Tujhe Dekha To", movie: "DDLJ (1995) · Lata & Kumar Sanu", q: "Tujhe Dekha To DDLJ official" },
+    { title: "O Oh Jaane Jaana", movie: "Pyaar Kiya To Darna Kya (1998)", q: "O Oh Jaane Jaana official" }
+  ];
+
+  let idx = 0, playing = false;
+  const iframe = document.getElementById('player');
+  const titleEl = document.getElementById('trackTitle');
+  const movieEl = document.getElementById('trackMovie');
+  const mainPlaySvg = document.getElementById('mainPlaySvg');
+  const ytmLink = document.getElementById('ytmLink');
+  const spotifyLink = document.getElementById('spotifyLink');
+
+  function updateMeta(){
+    const t = playlist[idx];
+    titleEl.textContent = t.title;
+    movieEl.textContent = t.movie;
+    ytmLink.href = 'https://music.youtube.com/search?q=' + encodeURIComponent(t.title);
+    spotifyLink.href = 'https://open.spotify.com/search/' + encodeURIComponent(t.title);
+  }
+  function ytSrc(){
+    const t = playlist[idx];
+    return 'https://www.youtube.com/embed?listType=search&list=' + encodeURIComponent(t.q) + '&autoplay=1&controls=0';
+  }
+  function setIcon(){
+    mainPlaySvg.innerHTML = playing
+      ? '<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>'
+      : '<path d="M8 5v14l11-7z"/>';
+  }
+  function play(){ iframe.src = ytSrc(); playing = true; setIcon(); updateMeta(); }
+  function pause(){ iframe.src = 'about:blank'; playing = false; setIcon(); updateMeta(); }
+  function toggle(){ playing ? pause() : play(); }
+  function next(){ idx = (idx + 1) % playlist.length; playing ? play() : updateMeta(); }
+  function prev(){ idx = (idx - 1 + playlist.length) % playlist.length; playing ? play() : updateMeta(); }
+
+  document.getElementById('playBtn').addEventListener('click', toggle);
+  document.getElementById('nextBtn').addEventListener('click', next);
+  document.getElementById('prevBtn').addEventListener('click', prev);
+
+  updateMeta();
+
+  let count = 42;
+  const liveEl = document.getElementById('liveCount');
+  setInterval(() => {
+    count += Math.floor(Math.random() * 5) - 2;
+    count = Math.max(18, Math.min(96, count));
+    liveEl.textContent = count + ' सिप पर · online';
+  }, 4000);
+</script>
+</body>
+</html>
