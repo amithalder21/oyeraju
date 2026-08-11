@@ -422,6 +422,7 @@
 
 <iframe id="player" title="audio" style="position:fixed;left:-9999px;top:-9999px;width:320px;height:180px;border:0;" allow="autoplay; encrypted-media"></iframe>
 
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
   const playlist = [
     { title: "Chaiyya Chaiyya", movie: "Dil Se (1998) · Sukhwinder Singh", id: "JS68-1RVTNY" },
@@ -437,7 +438,7 @@
   ];
 
   let idx = 0, playing = false;
-  const iframe = document.getElementById('player');
+  let ytPlayer = null, apiReady = false, pendingPlay = false, loadedIdx = 0;
   const titleEl = document.getElementById('trackTitle');
   const movieEl = document.getElementById('trackMovie');
   const mainPlaySvg = document.getElementById('mainPlaySvg');
@@ -451,17 +452,48 @@
     ytmLink.href = 'https://music.youtube.com/search?q=' + encodeURIComponent(t.title);
     spotifyLink.href = 'https://open.spotify.com/search/' + encodeURIComponent(t.title);
   }
-  function ytSrc(){
-    const t = playlist[idx];
-    return 'https://www.youtube.com/embed/' + t.id + '?autoplay=1&controls=0&playsinline=1&rel=0&modestbranding=1';
-  }
   function setIcon(){
     mainPlaySvg.innerHTML = playing
       ? '<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>'
       : '<path d="M8 5v14l11-7z"/>';
   }
-  function play(){ iframe.src = ytSrc(); playing = true; setIcon(); updateMeta(); }
-  function pause(){ iframe.src = 'about:blank'; playing = false; setIcon(); updateMeta(); }
+
+  function onYouTubeIframeAPIReady(){
+    apiReady = true;
+    ytPlayer = new YT.Player('player', {
+      videoId: playlist[idx].id,
+      playerVars: { autoplay: 0, controls: 0, playsinline: 1, rel: 0, modestbranding: 1 },
+      events: {
+        onReady: function(){ if (pendingPlay) { pendingPlay = false; play(); } },
+        onStateChange: onPlayerStateChange
+      }
+    });
+    loadedIdx = idx;
+  }
+  window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+
+  function onPlayerStateChange(e){
+    if (e.data === YT.PlayerState.ENDED) next();
+  }
+
+  function play(){
+    if (!apiReady || !ytPlayer || typeof ytPlayer.playVideo !== 'function') { pendingPlay = true; return; }
+    if (loadedIdx !== idx) {
+      ytPlayer.loadVideoById(playlist[idx].id);
+      loadedIdx = idx;
+    } else {
+      ytPlayer.playVideo();
+    }
+    playing = true;
+    setIcon();
+    updateMeta();
+  }
+  function pause(){
+    if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') ytPlayer.pauseVideo();
+    playing = false;
+    setIcon();
+    updateMeta();
+  }
   function toggle(){ playing ? pause() : play(); }
   function next(){ idx = (idx + 1) % playlist.length; playing ? play() : updateMeta(); }
   function prev(){ idx = (idx - 1 + playlist.length) % playlist.length; playing ? play() : updateMeta(); }
