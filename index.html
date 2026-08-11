@@ -420,20 +420,20 @@
   </div>
 </div>
 
-<iframe id="player" title="audio" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;" allow="autoplay"></iframe>
+<iframe id="player" title="audio" style="position:fixed;left:-9999px;top:-9999px;width:320px;height:180px;border:0;" allow="autoplay; encrypted-media"></iframe>
 
 <script>
   const playlist = [
-    { title: "Chaiyya Chaiyya", movie: "Dil Se (1998) · Sukhwinder Singh", q: "Chaiyya Chaiyya Dil Se official" },
-    { title: "Tanha Tanha", movie: "Rangeela (1995) · Asha Bhosle", q: "Tanha Tanha Rangeela official" },
-    { title: "Tu Cheez Badi Hai Mast Mast", movie: "Mohra (1994) · Udit Narayan", q: "Tu Cheez Badi Hai Mast Mast Mohra official" },
-    { title: "Ankhiyon Se Goli Maare", movie: "Dulhe Raja (1998) · Udit Narayan", q: "Ankhiyon Se Goli Maare official" },
-    { title: "Choli Ke Peeche", movie: "Khalnayak (1993) · Ila Arun", q: "Choli Ke Peeche Khalnayak official" },
-    { title: "Chura Ke Dil Mera", movie: "Main Khiladi Tu Anari (1994)", q: "Chura Ke Dil Mera official" },
-    { title: "Ek Chatur Naar", movie: "Padosan (1968) · Kishore Kumar", q: "Ek Chatur Naar Padosan" },
-    { title: "Kajra Re", movie: "Bunty Aur Babli (2005)", q: "Kajra Re Bunty Aur Babli official" },
-    { title: "Tujhe Dekha To", movie: "DDLJ (1995) · Lata & Kumar Sanu", q: "Tujhe Dekha To DDLJ official" },
-    { title: "O Oh Jaane Jaana", movie: "Pyaar Kiya To Darna Kya (1998)", q: "O Oh Jaane Jaana official" }
+    { title: "Chaiyya Chaiyya", movie: "Dil Se (1998) · Sukhwinder Singh", id: "JS68-1RVTNY" },
+    { title: "Tanha Tanha", movie: "Rangeela (1995) · Asha Bhosle", id: "DEU1phkgmbE" },
+    { title: "Tu Cheez Badi Hai Mast Mast", movie: "Mohra (1994) · Udit Narayan", id: "fT4vP4PnLxg" },
+    { title: "Ankhiyon Se Goli Maare", movie: "Dulhe Raja (1998) · Sonu Nigam", id: "i-ueJ148BFU" },
+    { title: "Choli Ke Peeche", movie: "Khalnayak (1993) · Alka Yagnik, Ila Arun", id: "Hkj61veJRHA" },
+    { title: "Chura Ke Dil Mera", movie: "Main Khiladi Tu Anari (1994)", id: "1eSG6dLiYxY" },
+    { title: "Ek Chatur Naar", movie: "Padosan (1968) · Kishore Kumar", id: "Spy2kMTYQ2o" },
+    { title: "Kajra Re", movie: "Bunty Aur Babli (2005)", id: "4dsFQFCvVGU" },
+    { title: "Tujhe Dekha To", movie: "DDLJ (1995) · Lata & Kumar Sanu", id: "cNV5hLSa9H8" },
+    { title: "O Oh Jaane Jaana", movie: "Pyaar Kiya To Darna Kya (1998)", id: "nLQPTYllTcs" }
   ];
 
   let idx = 0, playing = false;
@@ -453,7 +453,7 @@
   }
   function ytSrc(){
     const t = playlist[idx];
-    return 'https://www.youtube.com/embed?listType=search&list=' + encodeURIComponent(t.q) + '&autoplay=1&controls=0';
+    return 'https://www.youtube.com/embed/' + t.id + '?autoplay=1&controls=0&playsinline=1&rel=0&modestbranding=1';
   }
   function setIcon(){
     mainPlaySvg.innerHTML = playing
