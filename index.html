@@ -411,7 +411,8 @@ const playlist = [
 
   let idx = 0, playing = false;
   let ytPlayer = null, playerReady = false, pendingPlay = false, loadedIdx = 0;
-  let usingFallback = false, fallbackTimer = null;
+  let usingFallback = false, fallbackTimer = null, fallbackEndTimer = null;
+  const FALLBACK_ASSUMED_DURATION_MS = 270000;
   const titleEl = document.getElementById('trackTitle');
   const movieEl = document.getElementById('trackMovie');
   const mainPlaySvg = document.getElementById('mainPlaySvg');
@@ -542,6 +543,10 @@ const playlist = [
       playing = true;
       updatePlaybackUI();
       updateMeta();
+      clearTimeout(fallbackEndTimer);
+      fallbackEndTimer = setTimeout(function(){
+        if (usingFallback && playing) next();
+      }, FALLBACK_ASSUMED_DURATION_MS);
       return;
     }
     if (!playerReady || !ytPlayer) { pendingPlay = true; return; }
@@ -563,6 +568,7 @@ const playlist = [
       playing = false;
       updatePlaybackUI();
       updateMeta();
+      clearTimeout(fallbackEndTimer);
       return;
     }
     if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') ytPlayer.pauseVideo();
