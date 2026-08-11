@@ -146,10 +146,17 @@
     transition:width .4s linear;
   }
   .progress.indeterminate i{
-    width:30% !important;
-    animation:scrub 1.8s ease-in-out infinite alternate;
+    width:26% !important;
+    transform-origin:left center;
+    animation:heartbeat 1.8s ease-in-out infinite;
   }
-  @keyframes scrub{ 0%{ margin-left:0%; } 100%{ margin-left:70%; } }
+  @keyframes heartbeat{
+    0%, 100%{ transform:scaleX(1); opacity:.6; }
+    8%{ transform:scaleX(1.7); opacity:1; }
+    16%{ transform:scaleX(1); opacity:.6; }
+    24%{ transform:scaleX(1.7); opacity:1; }
+    36%{ transform:scaleX(1); opacity:.6; }
+  }
   .time{
     display:block; margin-top:4px;
     font-family:'Space Mono', monospace;
