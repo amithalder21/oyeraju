@@ -80,19 +80,19 @@
   .svc-links a.spotify svg{ fill:#1DB954; }
 
   .wordmark{
-    position:fixed; top:4%; left:50%; transform:translate(-50%,0);
+    position:fixed; top:1.5%; left:50%; transform:translate(-50%,0);
     z-index:4; text-align:center; width:100%; pointer-events:none;
   }
   .wordmark::before{
     content:"";
     position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-    width:min(920px, 92vw); height:220%;
+    width:min(760px, 88vw); height:240%;
     background:radial-gradient(ellipse at center, rgba(8,5,4,.5) 0%, rgba(8,5,4,.28) 45%, rgba(8,5,4,0) 75%);
     z-index:-1;
   }
   .wordmark h1{
     font-family:'Baloo 2', sans-serif; font-weight:800;
-    font-size:clamp(48px, 11vw, 128px);
+    font-size:clamp(40px, 8.5vw, 96px);
     line-height:.98;
     color:#FBF4E6;
     text-shadow:0 6px 40px rgba(0,0,0,.5), 0 2px 10px rgba(0,0,0,.35), 0 0 60px rgba(209,52,43,.35);
@@ -164,7 +164,7 @@
   .tbtn.play svg{ width:18px; height:18px; }
 
   @media (max-width:520px){
-    .wordmark{ top:6%; }
+    .wordmark{ top:2%; }
     .svc-links{ gap:14px; }
     .svc-links a span{ display:none; }
     .player{ gap:10px; padding:8px 12px 8px 8px; }
