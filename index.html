@@ -247,6 +247,7 @@
 
   let idx = 0, playing = false;
   let ytPlayer = null, playerReady = false, pendingPlay = false, loadedIdx = 0;
+  let usingFallback = false, fallbackTimer = null;
   const titleEl = document.getElementById('trackTitle');
   const movieEl = document.getElementById('trackMovie');
   const mainPlaySvg = document.getElementById('mainPlaySvg');
@@ -300,7 +301,7 @@
   }
 
   function onYouTubeIframeAPIReady(){
-    if (ytPlayer) return;
+    if (ytPlayer || usingFallback) return;
     ytPlayer = new YT.Player('player', {
       videoId: playlist[idx].id,
       playerVars: {
@@ -310,6 +311,7 @@
       host: 'https://www.youtube.com',
       events: {
         onReady: function(){
+          if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = null; }
           playerReady = true;
           loadedIdx = idx;
           if (pendingPlay) { pendingPlay = false; play(); }
@@ -317,8 +319,20 @@
         onStateChange: onPlayerStateChange
       }
     });
+    fallbackTimer = setTimeout(function(){
+      if (!playerReady) useFallbackPlayer();
+    }, 5000);
   }
   window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+
+  function useFallbackPlayer(){
+    if (usingFallback) return;
+    usingFallback = true;
+    stopProgressPolling();
+    progressFill.style.width = '0%';
+    timeEl.textContent = '0:00 / 0:00';
+    if (pendingPlay) { pendingPlay = false; play(); }
+  }
 
   function onPlayerStateChange(e){
     if (e.data === YT.PlayerState.PLAYING) startProgressPolling();
@@ -327,6 +341,15 @@
   }
 
   function play(){
+    if (usingFallback) {
+      const t = playlist[idx];
+      document.getElementById('player').src =
+        'https://www.youtube.com/embed/' + t.id + '?autoplay=1&controls=0&playsinline=1&rel=0&modestbranding=1';
+      playing = true;
+      setIcon();
+      updateMeta();
+      return;
+    }
     if (!playerReady || !ytPlayer) { pendingPlay = true; return; }
     if (loadedIdx !== idx) {
       ytPlayer.loadVideoById(playlist[idx].id);
@@ -341,6 +364,13 @@
     updateMeta();
   }
   function pause(){
+    if (usingFallback) {
+      document.getElementById('player').src = 'about:blank';
+      playing = false;
+      setIcon();
+      updateMeta();
+      return;
+    }
     if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') ytPlayer.pauseVideo();
     playing = false;
     setIcon();
