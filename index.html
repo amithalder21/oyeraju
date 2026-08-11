@@ -186,7 +186,7 @@
 
 <div class="topbar">
   <div class="clock" id="clockEl">--:--</div>
-  <div class="live"><span class="dot" aria-hidden="true"></span><span id="liveCount">42 सिप पर ऑनलाइन</span></div>
+  <div class="live"><span class="dot" aria-hidden="true"></span><span id="liveCount">42 राही यहाँ मौजूद</span></div>
   <div class="svc-links">
     <a id="ytmLink" class="ytm" href="#" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4 10.6l-6 3.4V8l6 3.4v1.2z"/></svg>
@@ -413,7 +413,7 @@
       const res = await fetch('/api/presence?id=' + encodeURIComponent(presenceId), { method: 'POST' });
       const data = await res.json();
       if (typeof data.count === 'number') {
-        liveEl.textContent = data.count + ' सिप पर ऑनलाइन';
+        liveEl.textContent = data.count + ' राही यहाँ मौजूद';
       }
     } catch (err) { /* keep last shown count on network failure */ }
   }
