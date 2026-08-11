@@ -300,10 +300,15 @@
   }
 
   function onYouTubeIframeAPIReady(){
+    if (ytPlayer) return;
     apiReady = true;
     ytPlayer = new YT.Player('player', {
       videoId: playlist[idx].id,
-      playerVars: { autoplay: 0, controls: 0, playsinline: 1, rel: 0, modestbranding: 1 },
+      playerVars: {
+        autoplay: 0, controls: 0, playsinline: 1, rel: 0, modestbranding: 1,
+        origin: window.location.origin
+      },
+      host: 'https://www.youtube.com',
       events: {
         onReady: function(){ if (pendingPlay) { pendingPlay = false; play(); } },
         onStateChange: onPlayerStateChange
