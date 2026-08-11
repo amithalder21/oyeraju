@@ -195,6 +195,15 @@
   .tbtn.play:hover{ background:#fff; transform:scale(1.06); }
   .tbtn.play svg{ width:16px; height:16px; }
 
+  .toast{
+    position:fixed; left:50%; bottom:110px; transform:translateX(-50%) translateY(8px);
+    background:rgba(20,12,7,.92); color:#FBF4E6; padding:9px 18px; border-radius:20px;
+    font-size:13px; opacity:0; pointer-events:none; z-index:20;
+    transition:opacity .25s ease, transform .25s ease;
+    border:1px solid rgba(255,255,255,.14);
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
   @media (max-width:520px){
     .svc-links{ gap:14px; }
     .svc-links a span{ display:none; }
@@ -256,8 +265,12 @@
     <button class="tbtn" id="nextBtn" aria-label="Next song">
       <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM4 6l10 6-10 6z"/></svg>
     </button>
+    <button class="tbtn" id="shareBtn" aria-label="Share this song">
+      <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 100-6 3 3 0 00-3 3c0 .24.04.47.09.7L7.04 9.81A2.99 2.99 0 002 12a3 3 0 003 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65a2.92 2.92 0 105.84 0 2.92 2.92 0 00-2.92-2.92z"/></svg>
+    </button>
   </div>
 </div>
+<div class="toast" id="shareToast" aria-live="polite"></div>
 
 <iframe id="player" title="audio" style="position:fixed;left:-9999px;top:-9999px;width:320px;height:180px;border:0;" allow="autoplay; encrypted-media"></iframe>
 
@@ -410,6 +423,11 @@ const playlist = [
   document.title = brand.hindi + ' — ' + brand.english;
 
   let idx = 0, playing = false;
+  const sharedVideoId = new URLSearchParams(location.search).get('v');
+  if (sharedVideoId) {
+    const sharedIdx = playlist.findIndex(t => t.id === sharedVideoId);
+    if (sharedIdx !== -1) idx = sharedIdx;
+  }
   let ytPlayer = null, playerReady = false, pendingPlay = false, loadedIdx = 0;
   let usingFallback = false, fallbackTimer = null, fallbackEndTimer = null;
   const FALLBACK_ASSUMED_DURATION_MS = 270000;
@@ -583,6 +601,36 @@ const playlist = [
   document.getElementById('playBtn').addEventListener('click', toggle);
   document.getElementById('nextBtn').addEventListener('click', next);
   document.getElementById('prevBtn').addEventListener('click', prev);
+
+  const shareToast = document.getElementById('shareToast');
+  let shareToastTimer = null;
+  function showToast(msg){
+    shareToast.textContent = msg;
+    shareToast.classList.add('show');
+    clearTimeout(shareToastTimer);
+    shareToastTimer = setTimeout(function(){ shareToast.classList.remove('show'); }, 2200);
+  }
+  document.getElementById('shareBtn').addEventListener('click', async function(){
+    const t = playlist[idx];
+    const shareUrl = location.origin + location.pathname + '?v=' + encodeURIComponent(t.id);
+    const shareData = {
+      title: brand.hindi + ' — ' + t.title,
+      text: t.title + (t.movie ? ' · ' + t.movie : '') + ' — ' + brand.english + ' पर सुनो',
+      url: shareUrl
+    };
+    if (navigator.share) {
+      try { await navigator.share(shareData); } catch (err) { /* user cancelled */ }
+      return;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        showToast('लिंक कॉपी हो गया');
+        return;
+      } catch (err) { /* fall through */ }
+    }
+    showToast(shareUrl);
+  });
 
   document.addEventListener('keydown', function(e){
     if (e.code === 'Space') { e.preventDefault(); toggle(); }
