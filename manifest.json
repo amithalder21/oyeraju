@@ -1,0 +1,16 @@
+{
+  "name": "Oye Raju — 90s Bollywood Radio",
+  "short_name": "Oye Raju",
+  "description": "90s–2000s Bollywood bangers off the college-crowd chai tapri.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#120e1e",
+  "theme_color": "#0E1A3D",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%98%95%3C/text%3E%3C/svg%3E",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

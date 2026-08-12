@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ओए राजू — Oye Raju</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%98%95%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href="/manifest.json">
 <meta name="description" content="90s–2000s Bollywood bangers off the college-crowd chai tapri. oyeraju.wtf">
 <meta name="theme-color" content="#0E1A3D">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,7 +51,9 @@
     display:flex; align-items:center; justify-content:space-between;
     padding:0 26px;
     z-index:5;
+    transition:opacity .7s ease;
   }
+  body.idle .topbar{ opacity:.1; }
   .glass-pill{
     height:32px; box-sizing:border-box;
     display:flex; align-items:center;
@@ -128,7 +131,9 @@
     border-radius:48px;
     padding:9.6px 16px 9.6px 9.6px;
     box-shadow:0 24px 60px -16px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.3), inset 0 0 50px rgba(255,255,255,.04);
+    transition:opacity .7s ease;
   }
+  body.idle .player{ opacity:.15; }
   .thumb{
     width:48px; height:48px; border-radius:50%;
     background:radial-gradient(circle at 32% 30%, #E3963E, #9C5326 75%);
@@ -471,6 +476,9 @@ const playlist = [
         artwork: [{ src: thumbEl.src, sizes: '480x360', type: 'image/jpeg' }]
       });
     }
+    const trackUrl = new URL(location.href);
+    trackUrl.searchParams.set('v', t.id);
+    history.replaceState(null, '', trackUrl);
   }
   const defaultTitle = document.title;
   function updatePlaybackUI(){
@@ -479,6 +487,9 @@ const playlist = [
     eqBars.classList.toggle('paused', !playing);
     if ('mediaSession' in navigator) {
       navigator.mediaSession.playbackState = playing ? 'playing' : 'paused';
+    }
+    if (playing) {
+      fetch('/api/playcount?v=' + encodeURIComponent(playlist[idx].id), { method: 'POST' }).catch(function(){});
     }
   }
   function setIcon(){
@@ -691,6 +702,23 @@ const playlist = [
   }
   updateClock();
   setInterval(updateClock, 1000);
+
+  let idleTimer = null;
+  function resetIdle(){
+    document.body.classList.remove('idle');
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(function(){ document.body.classList.add('idle'); }, 4000);
+  }
+  ['mousemove', 'touchstart', 'keydown', 'scroll', 'click'].forEach(function(ev){
+    document.addEventListener(ev, resetIdle, { passive: true });
+  });
+  resetIdle();
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('/sw.js').catch(function(){ /* ignore */ });
+    });
+  }
 </script>
 </body>
 </html>
