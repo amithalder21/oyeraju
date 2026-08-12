@@ -236,7 +236,7 @@
 <body>
 
 <div class="bg" aria-hidden="true">
-<img src="hero.jpg" alt="Raju the tapri waiter dashing with a tray of chai while college students hang out at the roadside stall at dusk">
+<img id="heroImg" src="hero.jpg" alt="Raju the tapri waiter dashing with a tray of chai while college students hang out at the roadside stall at dusk">
 </div>
 
 <div class="topbar">
@@ -431,13 +431,14 @@ const playlist = [
   })(playlist);
 
   const BRAND_CONFIG = {
-    'oyeraju.fun': { hindi: 'ओए राजू', english: 'Oye Raju' },
-    'oyebunny.fun': { hindi: 'ओए बनी', english: 'Oye Bunny' }
+    'oyeraju.fun': { hindi: 'ओए राजू', english: 'Oye Raju', hero: 'oyeraju.jpg' },
+    'oyebunny.fun': { hindi: 'ओए बनी', english: 'Oye Bunny', hero: 'oyebunny.jpg' }
   };
   const DEFAULT_BRAND = BRAND_CONFIG['oyebunny.fun'];
   const brand = BRAND_CONFIG[location.hostname.replace(/^www\./, '')] || DEFAULT_BRAND;
   document.querySelector('.wordmark h1').textContent = brand.hindi;
   document.title = brand.hindi + ' — ' + brand.english;
+  document.getElementById('heroImg').src = brand.hero;
 
   let idx = 0, playing = false;
   const sharedVideoId = new URLSearchParams(location.search).get('v');

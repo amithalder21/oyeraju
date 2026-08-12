@@ -1,5 +1,5 @@
-const CACHE_NAME = 'oye-raju-shell-v2';
-const SHELL_FILES = ['/', '/index.html', '/hero.jpg'];
+const CACHE_NAME = 'oye-raju-shell-v3';
+const SHELL_FILES = ['/', '/index.html', '/oyeraju.jpg', '/oyebunny.jpg'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
