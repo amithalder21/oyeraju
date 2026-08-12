@@ -1,4 +1,4 @@
-const CACHE_NAME = 'oye-raju-shell-v1';
+const CACHE_NAME = 'oye-raju-shell-v2';
 const SHELL_FILES = ['/', '/index.html', '/hero.jpg'];
 
 self.addEventListener('install', (event) => {
@@ -23,15 +23,12 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
-        if (response.ok) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-        }
-        return response;
-      }).catch(() => cached);
-    })
+    fetch(event.request).then((response) => {
+      if (response.ok) {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+      }
+      return response;
+    }).catch(() => caches.match(event.request))
   );
 });
