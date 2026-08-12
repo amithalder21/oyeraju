@@ -694,7 +694,7 @@ const playlist = [
     } catch (err) { /* keep last shown count on network failure */ }
   }
   pingPresence();
-  setInterval(pingPresence, 15000);
+  setInterval(pingPresence, 30000);
 
   const clockEl = document.getElementById('clockEl');
   function updateClock(){
