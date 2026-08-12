@@ -236,8 +236,15 @@
 <body>
 
 <div class="bg" aria-hidden="true">
-<img id="heroImg" src="hero.jpg" alt="Raju the tapri waiter dashing with a tray of chai while college students hang out at the roadside stall at dusk">
+<img id="heroImg" fetchpriority="high" alt="Raju the tapri waiter dashing with a tray of chai while college students hang out at the roadside stall at dusk">
 </div>
+<script>
+  (function(){
+    var HERO_MAP = { 'oyeraju.fun': 'oyeraju.jpg', 'oyebunny.fun': 'oyebunny.jpg' };
+    var host = location.hostname.replace(/^www\./, '');
+    document.getElementById('heroImg').src = HERO_MAP[host] || 'oyebunny.jpg';
+  })();
+</script>
 
 <div class="topbar">
   <div class="clock glass-pill" id="clockEl">--:--</div>
@@ -291,7 +298,7 @@
 
 <iframe id="player" title="audio" style="position:fixed;left:-9999px;top:-9999px;width:320px;height:180px;border:0;" allow="autoplay; encrypted-media"></iframe>
 
-<script src="https://www.youtube.com/iframe_api"></script>
+<script src="https://www.youtube.com/iframe_api" defer></script>
 <script>
 const playlist = [
     { title: "Oye Raju Pyar Na Kariyo", movie: "Hadh Kar Di Aapne (2000) · Anand Raj Anand", id: "nNhv8A_rJTg" },
