@@ -707,7 +707,7 @@ const playlist = [
   function resetIdle(){
     document.body.classList.remove('idle');
     clearTimeout(idleTimer);
-    idleTimer = setTimeout(function(){ document.body.classList.add('idle'); }, 4000);
+    idleTimer = setTimeout(function(){ document.body.classList.add('idle'); }, 30000);
   }
   ['mousemove', 'touchstart', 'keydown', 'scroll', 'click'].forEach(function(ev){
     document.addEventListener(ev, resetIdle, { passive: true });
