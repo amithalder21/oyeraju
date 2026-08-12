@@ -476,9 +476,6 @@ const playlist = [
         artwork: [{ src: thumbEl.src, sizes: '480x360', type: 'image/jpeg' }]
       });
     }
-    const trackUrl = new URL(location.href);
-    trackUrl.searchParams.set('v', t.id);
-    history.replaceState(null, '', trackUrl);
   }
   const defaultTitle = document.title;
   function updatePlaybackUI(){
